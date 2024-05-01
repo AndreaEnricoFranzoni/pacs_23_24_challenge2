@@ -51,7 +51,8 @@ Removing documentation:
 rm -r doc
 ~~~
 
-
+# Files content
+-`main.cpp`: matrix in `lnsp_131.mtx` is read through MMF reader. It is stored 
 
 Main function: firstly, the matrix contained in lnsp_131.mtx is read through the MMF reader. It is stored yet as RowWise yet as ColumnWise matrix. Then, yet a std::vector yet an algebra::Matrix<T,O> with 1-col, with the right dimensions, are constructed, filled with increasing values starting from 0 up to the number of cols of the matrix read.
 The main tests the performances using “Chrono.hpp” doing :
