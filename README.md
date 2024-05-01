@@ -52,17 +52,16 @@ rm -r doc
 ~~~
 
 # Files content
--`main.cpp`: matrix in `lnsp_131.mtx` is read through MMF reader. It is stored 
-
-Main function: firstly, the matrix contained in lnsp_131.mtx is read through the MMF reader. It is stored yet as RowWise yet as ColumnWise matrix. Then, yet a std::vector yet an algebra::Matrix<T,O> with 1-col, with the right dimensions, are constructed, filled with increasing values starting from 0 up to the number of cols of the matrix read.
-The main tests the performances using “Chrono.hpp” doing :
--matrix-vector product with std::vector 
--matrix-vector product with algebra::Matrix<T,O>
--matrix-matrix product doing the square of the read matrix
--evaluating the norm One of the read matrix
--evaluating the norm Infinity of the read matrix
--evaluating the Frobenius norm of the read matrix
-
+-`main.cpp`: matrix in `lnsp_131.mtx` is read through MMF reader. It is stored both row-wise and column-wise. To test matrix-vector product, both an `std::vector<T>' and an `algebra::Matrix<T,O>` of the right dimensions are constructed, filled with increasing values starting from 0.
+The main function, using `Chrono.hpp' test the perdormances of:
+1. matrix-vector product with the vector being `std::vector`;
+2. matrix-vector product with the vector being a 1-col `algebra::Matrix<T,O>`;
+3. matrix-matrix product doing the square of the read matrix;
+4. norm One of the read matrix;
+5. norm Infinity of the read matrix;
+6. Frobenius norm of the read matrix.
+Performances are evaluated for both row-wise and column-wise storage, and in both cases for uncompressed and compressed format: elapsed time is lower in compressed format.
+Switching
 The performances are evaluated for the following format of the read matrix: row-wise uncompressed, row-wise compressed, col-wise uncompressed, col-wise compressed. The time elapsed is lower when relaying on compressed format, for both the storage orders.
 Switching off other processes and activating optimization allows the program to work at its best. 
 
