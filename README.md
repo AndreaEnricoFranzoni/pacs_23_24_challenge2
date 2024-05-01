@@ -73,18 +73,16 @@ Switching off other processes allows the parallelization due to `std::execution:
 matrix_types_def.hpp contains the definition of the enumerator, types and the functor to handle col-wise ordering;
 - `matrix_reader_imp.hpp`: definition of the reader of MMF;
 - `matrix_norm_imp.hpp`: definition of the three functions to evaluate the norm;
-- `matrix_get_row_col_imp.hpp`: defintion of `check
+- `matrix_get_row_col_imp.hpp`: defintion of `check_presence_row`, `check_presence_col`, `check_presence`, `get_row` and `get_col` methods.
 					
-matrix_reader_imp.hpp contains the definition of the reader of MMF format.
-matrix_norm_imp.hpp contains the definitions of the three different functions to evaluate the norm.
-matrix_get_row_col_imp.hpp contains the definitions of the method for checking presence of a row, a col and and element, as well as the ones to get a row or a col.
+# Features
+- Use of `std::conditional` to construct correctly the uncompressed matrix depending on its storaging.
+- Use of `if constexpr(O==StrorageOrder::RowWise)` and `else` to compile only the code regarding the specific storage.
+- Use of tag dispatching for evaluating the norm as requested.
+- Expolitation of `STL` algorithms, both in their original (to relay on parallelization if possible) and constrained version. Getting a row or a col is done looking for the correct iterator describing that range of values if uncompressed, while looking for the correct indices of the stored values if compressed. If uncompressed, is trivial due to the overloading of the `less` operator. If compressed, is easy to retrain a row/col if row-wise/column-wise respectively, while the viceversa is not trivial (since the values will not be stored contiguously a priori). Further explanations in the comments of the code. 
 
-In general, the code exploits STL algorithms, yet in their original version yet in their constrained version.
-In particular, for getting a row or a col, the code tries to get iterators to the first and after-the-last one element of the row/col for the uncompressed format, while for the compressed one relays on understanding from outer and inner indices if the row/col is present and which are its extrema. 
-use of std::conditional to use the correct less operator.
-					In general, if constexpr is used to compile only the code lines related to a specific matrix, depending on its storing. For the norm, tag dispatching is exploited.
-For uncompressed format, the overload of the less operand makes trivial both cases.
-While, for compressed format, is easy to retrain a row for row-wise and a col for col-wise storage, while the viceversa is not so trivial: a better explanation is done on the comment of the code.
+
+
 
 Issues:
 -friend operators are defined in the header file. Putting them in a .cpp did not work since it would not compile in case;
