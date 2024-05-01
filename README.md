@@ -71,9 +71,9 @@ Switching off other processes allows the parallelization due to `std::execution:
 - `matrix_imp.hpp`: definition of `compress` and `uncompress` methods, as well as the ones of the call `operator()`, in both its const and non-const version;
 - `matrix_types_def.hpp`: definition of the enumerators and types used, of the functor handling column-wise ordering;
 matrix_types_def.hpp contains the definition of the enumerator, types and the functor to handle col-wise ordering;
--`matrix_reader_imp.hpp`: definition of the reader of MMF;
--`matrix_norm_imp.hpp`: definition of the three functions to evaluate the norm;
--`matrix_get_row_col_imp.hpp`: defintion of `check
+- `matrix_reader_imp.hpp`: definition of the reader of MMF;
+- `matrix_norm_imp.hpp`: definition of the three functions to evaluate the norm;
+- `matrix_get_row_col_imp.hpp`: defintion of `check
 					
 matrix_reader_imp.hpp contains the definition of the reader of MMF format.
 matrix_norm_imp.hpp contains the definitions of the three different functions to evaluate the norm.
