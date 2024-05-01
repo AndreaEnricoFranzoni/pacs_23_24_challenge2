@@ -60,14 +60,10 @@ The main function, using `Chrono.hpp' test the perdormances of:
 4. norm One of the read matrix;
 5. norm Infinity of the read matrix;
 6. Frobenius norm of the read matrix.
-Performances are evaluated for both row-wise and column-wise storage, and in both cases for uncompressed and compressed format: elapsed time is lower in compressed format.
-Switching
-The performances are evaluated for the following format of the read matrix: row-wise uncompressed, row-wise compressed, col-wise uncompressed, col-wise compressed. The time elapsed is lower when relaying on compressed format, for both the storage orders.
-Switching off other processes and activating optimization allows the program to work at its best. 
 
-Then, a small overview on matrix with complex coefficients is done: a 2x2 matrix is constructed with complex coefficients, as well as an std::vector with complex coefficients of size 2 and another algebra::Matrix 2x1 with complex coefficients.
-The same operations as before are committed, but instead than evaluating the performance in this case simply results are displayed in order to check that results and types are coherent.
-For the sake of simplicity, only the case of row-wise uncompressed is displayed, while the other are left commented. But obviously is possible to see the correct results by simply leaving out the comments.
+Performances are evaluated for both row-wise and column-wise storage, and in both cases for uncompressed and compressed format: elapsed time (microseconds) is lower in compressed format.
+Switching off other processes allows the parallelization due to `std::execution::par` to work better.
+7. Construction of a 2x2 matrix with complex coefficients, as the one of a vector with complex coefficients as before. Matrix-vector product, in both its version, matrix-matrix product and all the three types of norms are tested, and the results are displayed to show that returned types are coherent. The test is done in all the storage order and formats, but only the row-wise uncompressed, for the sake of semplicity, is shown, while other cases are left commented.
 
 In the folder /include:
 matrix.hpp contains the declaration of the template class, under the namespace algebra, as well as the definition of the friend operator * and the friend operator <<.
