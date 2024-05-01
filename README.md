@@ -52,7 +52,7 @@ rm -r doc
 ~~~
 
 # Files content
--`main.cpp`: matrix in `lnsp_131.mtx` is read through MMF reader. It is stored both row-wise and column-wise. To test matrix-vector product, both an `std::vector<T>' and an `algebra::Matrix<T,O>` of the right dimensions are constructed, filled with increasing values starting from 0.
+-**`main.cpp`**: matrix in `lnsp_131.mtx` is read through MMF reader. It is stored both row-wise and column-wise. To test matrix-vector product, both an `std::vector<T>' and an `algebra::Matrix<T,O>` of the right dimensions are constructed, filled with increasing values starting from 0.
 The main function, using `Chrono.hpp' test the perdormances of:
 1. matrix-vector product with the vector being `std::vector`;
 2. matrix-vector product with the vector being a 1-col `algebra::Matrix<T,O>`;
@@ -63,20 +63,26 @@ The main function, using `Chrono.hpp' test the perdormances of:
 
 Performances are evaluated for both row-wise and column-wise storage, and in both cases for uncompressed and compressed format: elapsed time (microseconds) is lower in compressed format.
 Switching off other processes allows the parallelization due to `std::execution::par` to work better.
-7. Construction of a 2x2 matrix with complex coefficients, as the one of a vector with complex coefficients as before. Matrix-vector product, in both its version, matrix-matrix product and all the three types of norms are tested, and the results are displayed to show that returned types are coherent. The test is done in all the storage order and formats, but only the row-wise uncompressed, for the sake of semplicity, is shown, while other cases are left commented.
 
-In the folder /include:
-matrix.hpp contains the declaration of the template class, under the namespace algebra, as well as the definition of the friend operator * and the friend operator <<.
-matrix_imp.hpp contains the definitions of compress, uncompress methods and the call operator, in its const and non-const version.
-matrix_types_def.hpp contains the definition of the enumerator and types used, the functor to handle col-wise ordering, as well as the use of std::conditional to use the correct less operator.
-					In general, if constexpr is used to compile only the code lines related to a specific matrix, depending on its storing.
-					For the norm, tag dispatching is exploited.
+7. Construction of a 2x2 matrix with complex coefficients and of a vector with complex coefficients as before. Matrix-vector product, in both its version, matrix-matrix product (square of the matrix) and all the three types of norm's evaluation are tested, displaying results to show that returned types are coherent. The test is done in all the storage order and formats, but only the row-wise uncompressed, for the sake of semplicity, is shown, while other cases are left commented.
+
+-**folder `/include`**:
+- `matrix.hpp`: declaration of the class under the nanmespace `algebra`, as well as the definitions of the friend `operator*` and the friend `operator <<`;
+- `matrix_imp.hpp`: definition of `compress` and `uncompress` methods, as well as the ones of the call `operator()`, in both its const and non-const version;
+- `matrix_types_def.hpp`: definition of the enumerators and types used, of the functor handling column-wise ordering;
+matrix_types_def.hpp contains the definition of the enumerator, types and the functor to handle col-wise ordering;
+-`matrix_reader_imp.hpp`: definition of the reader of MMF;
+-`matrix_norm_imp.hpp`: definition of the three functions to evaluate the norm;
+-`matrix_get_row_col_imp.hpp`: defintion of `check
+					
 matrix_reader_imp.hpp contains the definition of the reader of MMF format.
 matrix_norm_imp.hpp contains the definitions of the three different functions to evaluate the norm.
 matrix_get_row_col_imp.hpp contains the definitions of the method for checking presence of a row, a col and and element, as well as the ones to get a row or a col.
 
 In general, the code exploits STL algorithms, yet in their original version yet in their constrained version.
 In particular, for getting a row or a col, the code tries to get iterators to the first and after-the-last one element of the row/col for the uncompressed format, while for the compressed one relays on understanding from outer and inner indices if the row/col is present and which are its extrema. 
+use of std::conditional to use the correct less operator.
+					In general, if constexpr is used to compile only the code lines related to a specific matrix, depending on its storing. For the norm, tag dispatching is exploited.
 For uncompressed format, the overload of the less operand makes trivial both cases.
 While, for compressed format, is easy to retrain a row for row-wise and a col for col-wise storage, while the viceversa is not so trivial: a better explanation is done on the comment of the code.
 
