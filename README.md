@@ -1,26 +1,56 @@
-# pacs_23_24_challenge2
+# Content
+The repository contains a class to handle sparse matrices, able to read them from a MMF(Matrix Market Format) file, to efficiently update their values dynamically and to efficiently perform matrix-vector product, matrix-matrix product, norm one, norm infinity and Frobenius norm due to its capability to compress/uncompress the format of the matrix.
 
-The repository contains a class to handle sparse matrices, from reading them from a MMF(Matrix Market Format) file to efficiently updating their values dynamically and efficiently performing matrix-vector product, matrix-matrix product and norm one, infinity and Frobenius due to its capability to compress/decompress the format of the matrix.
+# Data structure
+The class is, under the namespace `algebra`, a template class: `Matrix<T,O>`.
 
-Matrices store elements of the template parameter: everything works for integral, floating and complex types.
-Matrices can be stored row-wise or column-wise: it is a template parameter, and once a matrix is constructed with a storage ordering, it is not possible to change it anymore.
-Uncompressed format: COOmap format is used. Key is a std::array<std::size_t,2>. Handling the different ways of storage ordering is done using std::conditional: for column-wise storing, the lexicographical ordering has to start from the second indices of the key, and its defined by a functor passed if column-wise is requested.
-Compressed format: CSR/CSC format is exploited, using std::vector for all the three vectors.
+The template parameter `T` refers to the type of the values stored: works for integral, floating and complex types, but the operations are suited only for scalar values.
 
-Requirements: the code relays on std::execution::par whenever possible, since using std::vector that are sequential containers. It is necessary to link libttb library.
-			 The pacs utility “Chrono.hpp” is required, so the link with libpacs.so is required.
+The template parameter `O` referes to the storage order: `StorageOrder::RowWise` and `StorageOrder::ColumnWise`. Once a matrix has been constructed with a storage order, it is not possible to change it anymore.
 
+Matrices can switch between uncompressed and compressed format.
 
-Running the code:
-The file Makefile has to be modified putting the proper PACS_ROOT, and the beginning.
-make: compiling
-./main: executing main function
+Uncompressed format: COOmap. Data are stored using `std::map`, where key is `std::array<std::size_t,2>`, the first element of the array referring to the row where an element is stored, the second one to the row, and value is `T`. Lexicographical ordering of the `std::array` handles row-wise storage, while a functor to handle the column-wise storage is passed in the other case, using `std::conditional`.
 
-Documentation:
-In the file Doxyfile, is necessary to modify in the line 2239: after  INCLUDE_PATH = ./include \ .\  ,is necessary to put PACS_ROOT/include, with PACS_ROOT being the proper pacs root
-make doc. will give back a directory doc: in the subfolder html, opening index.html will give back the Doxygen documentation for the code
+Compressed format: CSR/CSC. Data are stored using three `std::vector`, storing values of type `T` for the vector concerning values storage, while of type `std::size_t` for the other two that handle indeces storaging.
 
-make disctlean remove object files and executables, but not the doc folder: once is created, it has be removed manually.
+# Requirements 
+Code exploits on `std::execution::par` whenever it is possible. Linking `libttb` library is necessary.
+
+The PACs utility `Chrono.hpp` is used. Linking `libpacs.so` is also required.
+
+The file `Makefile` has to be modified, putting the proper `PACS_ROOT` at the beginning.
+
+The file `Doxyfile` has to be modified at the line 2239: after `INCLUDE_PATH = ./include \ .\ `, is necessary to put `PACS_ROOT/include`.
+
+# Running the code
+
+Compiling, with the flag `-O3` for optimization already set:
+~~~
+make
+~~~
+
+Running the executable:
+~~~
+./main
+~~~
+
+Documentation: 
+~~~
+make doc
+~~~
+create a directory `doc`, in which there are two subfolders (`html` and `latex`): in `html`, opening the file `index.html`, will open on the browser the code documentation constructed with Doxygen.
+
+Cleaning from object files and executables:
+~~~
+make distclean
+~~~
+
+Removing documentation:
+~~~
+rm -r doc
+~~~
+
 
 
 Main function: firstly, the matrix contained in lnsp_131.mtx is read through the MMF reader. It is stored yet as RowWise yet as ColumnWise matrix. Then, yet a std::vector yet an algebra::Matrix<T,O> with 1-col, with the right dimensions, are constructed, filled with increasing values starting from 0 up to the number of cols of the matrix read.
