@@ -1,0 +1,13 @@
+- README is clear and complete
+
+- a lot of warnings:
+    - declare static the returned reference to a local variable
+    - pay attention to the types of integer when comparing them
+
+- not much gain in computational time with compression
+
+- definition of friend operators should be outside of the class
+
+- missing non const call operator()(int i, int j)
+
+- good use of the std library 

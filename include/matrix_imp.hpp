@@ -129,7 +129,8 @@ Const call operator: if there is no element, 0 casted to type T is returned. Els
 template<class T, StorageOrder O>
 T
 algebra::Matrix<T,O>::operator()(std::size_t i, std::size_t j) const
-{   
+{
+std::cout << "call const" << std::endl;   
     //checking if the element is present: if not, 0 of the right type is returned
     if (!this->check_presence(i,j)) {return (static_cast<T>(0));}
 
@@ -169,13 +170,14 @@ Non-const call operator: if compressed, cannot add/remove elements, but only mod
 template<class T, StorageOrder O>
 T &
 algebra::Matrix<T,O>::operator()(std::size_t i, std::size_t j, const T newvalue)
-{   
+{  
+std::cout << "call non const" << std::endl; 
     //checking if the indexes passed are ok
     assert(i<m_m and j<m_n);
     //checking if the element is already present
     bool check_ij = check_presence(i,j);
     //checking if newvalue is null
-    T zerovalue = 0;
+    static T zerovalue = 0;
     bool new_zero = (newvalue==zerovalue);
     //No non-null elements and newvalue null means nothing to be done
     if (new_zero and m_nnz==0){return zerovalue;}

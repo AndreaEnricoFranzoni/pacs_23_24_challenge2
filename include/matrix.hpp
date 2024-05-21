@@ -106,6 +106,7 @@ public:
     * Setter for if it is compressed. 
     * @return the private member m_compressed, modifying it
     */
+    // you should not be able to modify it ouside of the compress() and uncompress methods()
     bool &is_compressed() {return m_compressed;};
 
 
